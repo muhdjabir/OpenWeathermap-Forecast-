@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static TextView nyText, sgText, mumbaiText, delhiText, sydneyText, melbText;
     private static Button refreshButton;
     private static ArrayList<String> cities = new ArrayList<String>();
+    String lastUpdate, lastWeather, lastLocation, lastNY, lastSG, lastMB, lastDH, lastSYD, lastMEL;
     LocationTrack locationTrack;
     DecimalFormat df = new DecimalFormat("#.##");
 
@@ -74,12 +75,52 @@ public class MainActivity extends AppCompatActivity {
         String lastUpdate = pref.getString("timeStamp", "No prior update");
         String lastWeather = pref.getString("weatherStamp", "No Weather");
         String lastLocation = pref.getString("locationStamp", "Weather Forecast");
+        String lastNY = pref.getString("ny", "New York");
+        String lastSG = pref.getString("sg", "Singapore");
+        String lastMB = pref.getString("mb", "Mumbai");
+        String lastDH = pref.getString("dh", "Delhi");
+        String lastSYD = pref.getString("sydney", "Sydney");
+        String lastMEL = pref.getString("mel", "Melbourne");
         populateCities();
         connectViews();
         timeStamp.setText(lastUpdate);
         currentLocation.setText(lastLocation);
         locationText.setText(lastWeather);
+        nyText.setText(lastNY);
+        sgText.setText(lastSG);
+        mumbaiText.setText(lastMB);
+        delhiText.setText(lastDH);
+        sydneyText.setText(lastSYD);
+        melbText.setText(lastMEL);
     }
+
+    /* WEIRD, DOESNT WORK WHEN ABSTRACTED OUT
+    private void setHistory(View view) {
+        timeStamp.setText(lastUpdate);
+        currentLocation.setText(lastLocation);
+        locationText.setText(lastWeather);
+        nyText.setText(lastNY);
+        sgText.setText(lastSG);
+        mumbaiText.setText(lastMB);
+        delhiText.setText(lastDH);
+        sydneyText.setText(lastSYD);
+        melbText.setText(lastMEL);
+    }
+
+    private void getHistory() {
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        String lastUpdate = pref.getString("timeStamp", "No prior update");
+        String lastWeather = pref.getString("weatherStamp", "No Weather");
+        String lastLocation = pref.getString("locationStamp", "Weather Forecast");
+        String lastNY = pref.getString("ny", "New York");
+        String lastSG = pref.getString("sg", "Singapore");
+        String lastMB = pref.getString("mb", "Mumbai");
+        String lastDH = pref.getString("dh", "Delhi");
+        String lastSYD = pref.getString("sydney", "Sydney");
+        String lastMEL = pref.getString("mel", "Melbourne");
+    }
+    */
+
 
     private void connectViews() {
         locationText = findViewById(R.id.LocationText);
@@ -105,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     public void refreshWeatherDetails(View view) {
         locationTrack = new LocationTrack(MainActivity.this);
         if (locationTrack.canGetLocation() && isConnected()) {
-            sayHi(view);
+            getOtherWeather(view);
             double longitude = locationTrack.getLongitude();
             double latitude = locationTrack.getLatitude();
             String tempUrl = "";
@@ -168,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void sayHi(View view) {
+    public void getOtherWeather(View view) {
         Toast.makeText(getApplicationContext(),"HELLO THERE", Toast.LENGTH_LONG).show();
         for (String city : cities) {
             String tempUrl = "";
@@ -334,9 +375,21 @@ public class MainActivity extends AppCompatActivity {
         String lastUpdated = timeStamp.getText().toString();
         String lastLocation = currentLocation.getText().toString();
         String lastWeather = locationText.getText().toString();
+        String ny = nyText.getText().toString();
+        String sg = sgText.getText().toString();
+        String mb = mumbaiText.getText().toString();
+        String dh = delhiText.getText().toString();
+        String sydney = sydneyText.getText().toString();
+        String mel = melbText.getText().toString();
         editor.putString("timeStamp", lastUpdated);
         editor.putString("locationStamp", lastLocation);
         editor.putString("weatherStamp", lastWeather);
+        editor.putString("ny", ny);
+        editor.putString("sg", sg);
+        editor.putString("mb", mb);
+        editor.putString("dh", dh);
+        editor.putString("sydney", sydney);
+        editor.putString("mel", mel);
         editor.apply();
     }
     /*
