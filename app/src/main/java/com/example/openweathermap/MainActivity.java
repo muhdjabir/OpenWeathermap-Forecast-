@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private static TextView locationText;
     private static TextView currentLocation;
     private static TextView timeStamp;
+    private static TextView nyText, sgText, mumbaiText, delhiText, sydneyText, melbText;
     private static Button refreshButton;
+    private static ArrayList<String> cities = new ArrayList<String>();
     LocationTrack locationTrack;
     DecimalFormat df = new DecimalFormat("#.##");
 
@@ -70,18 +74,38 @@ public class MainActivity extends AppCompatActivity {
         String lastUpdate = pref.getString("timeStamp", "No prior update");
         String lastWeather = pref.getString("weatherStamp", "No Weather");
         String lastLocation = pref.getString("locationStamp", "Weather Forecast");
-        locationText = findViewById(R.id.LocationText);
-        refreshButton = findViewById(R.id.RefreshButton);
-        currentLocation = findViewById(R.id.CurrentLocation);
-        timeStamp = findViewById(R.id.TimeStamp);
+        populateCities();
+        connectViews();
         timeStamp.setText(lastUpdate);
         currentLocation.setText(lastLocation);
         locationText.setText(lastWeather);
     }
 
-    public void refreshWeatherDetails(View vew) {
+    private void connectViews() {
+        locationText = findViewById(R.id.LocationText);
+        refreshButton = findViewById(R.id.RefreshButton);
+        currentLocation = findViewById(R.id.CurrentLocation);
+        timeStamp = findViewById(R.id.TimeStamp);
+        nyText =findViewById(R.id.nyText);
+        sgText = findViewById(R.id.sgText);
+        mumbaiText = findViewById(R.id.mumbaiText);
+        delhiText = findViewById(R.id.delhiText);
+        sydneyText = findViewById(R.id.sydneyText);
+        melbText = findViewById(R.id.melbourneText);
+    }
+    private void populateCities() {
+        cities.add("New York");
+        cities.add("Singapore");
+        cities.add("Mumbai");
+        cities.add("Delhi");
+        cities.add("Sydney");
+        cities.add("Melbourne");
+    }
+
+    public void refreshWeatherDetails(View view) {
         locationTrack = new LocationTrack(MainActivity.this);
         if (locationTrack.canGetLocation() && isConnected()) {
+            sayHi(view);
             double longitude = locationTrack.getLongitude();
             double latitude = locationTrack.getLatitude();
             String tempUrl = "";
@@ -141,6 +165,72 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No Wifi Connection", Toast.LENGTH_SHORT).show();
         } else  {
             locationTrack.showSettingsAlert();
+        }
+    }
+
+    public void sayHi(View view) {
+        Toast.makeText(getApplicationContext(),"HELLO THERE", Toast.LENGTH_LONG).show();
+        for (String city : cities) {
+            String tempUrl = "";
+            tempUrl = String.format("%s?q=%s&appid=%s", url, city, appid);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Log.d("response", response);
+                            String output = String.format("%s\n", city);
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                JSONArray jsonArray = jsonResponse.getJSONArray("weather");
+                                JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
+                                String description = jsonObjectWeather.getString("description");
+                                JSONObject jsonObjectMain = jsonResponse.getJSONObject("main");
+                                double temp = jsonObjectMain.getDouble("temp") - 273.15;
+                                int humidity = jsonObjectMain.getInt("humidity");
+                                JSONObject jsonObjectWind = jsonResponse.getJSONObject("wind");
+                                String wind = jsonObjectWind.getString("speed");
+                                JSONObject jsonObjectClouds = jsonResponse.getJSONObject("clouds");
+                                String clouds = jsonObjectClouds.getString("all");
+                                JSONObject jsonObjectSys = jsonResponse.getJSONObject("sys");
+                                //String countryName = jsonObjectSys.getString("country");
+                                //String cityName = jsonResponse.getString("name");
+                                output += " Temp: " + df.format(temp) + " °C"
+                                        + "\n Humidity: " + humidity + "%"
+                                        + "\n Description: " + description
+                                        + "\n Wind Speed: " + wind + "m/s"
+                                        + "\n Cloudiness: " + clouds + "%";
+                                switch (city) {
+                                    case ("New York"):
+                                        nyText.setText(output);
+                                        break;
+                                    case ("Singapore"):
+                                        sgText.setText(output);
+                                        break;
+                                    case ("Mumbai"):
+                                        mumbaiText.setText(output);
+                                        break;
+                                    case ("Delhi"):
+                                        delhiText.setText(output);
+                                        break;
+                                    case ("Sydney"):
+                                        sydneyText.setText(output);
+                                        break;
+                                    case ("Melbourne"):
+                                        melbText.setText(output);
+                                        break;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
         }
     }
 
