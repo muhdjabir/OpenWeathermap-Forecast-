@@ -41,7 +41,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     private final String url = "https://api.openweathermap.org/data/2.5/weather";
-    private final String appid = "62f612d0399ba05729e890ef4394a359";
+    private final String appid = "";
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
