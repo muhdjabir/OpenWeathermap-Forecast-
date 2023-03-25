@@ -20,147 +20,146 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/CurrentLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Weather Forecast"
-        android:textSize="40sp" />
+            <TextView
+                android:id="@+id/CurrentLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Weather Forecast"
+                android:textSize="40sp" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="#00BCD4"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="#00BCD4"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/LocationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No Weather Information"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/LocationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Weather Information"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/TimeStamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last updated at:"
-        android:textSize="15sp" />
+            <TextView
+                android:id="@+id/TimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last updated at:"
+                android:textSize="15sp" />
 
-    <Button
-        android:id="@+id/RefreshButton"
-        android:layout_width="166dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="#00BCD4"
-        android:onClick="refreshWeatherDetails"
-        android:text="Refresh Location" />
+            <Button
+                android:id="@+id/RefreshButton"
+                android:layout_width="166dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#00BCD4"
+                android:onClick="refreshWeatherDetails"
+                android:text="Refresh Location" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="#DF493E"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="#DF493E"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/nyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New York"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/nyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New York"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="#7FE883"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="#7FE883"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/sgText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Singapore"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/sgText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Singapore"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="#00BCD4"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="#00BCD4"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/mumbaiText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mumbai"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/mumbaiText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mumbai"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="#FF5722"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="#FF5722"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/delhiText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delhi"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/delhiText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delhi"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="#FFEB3B"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="#FFEB3B"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/sydneyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sydney"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/sydneyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sydney"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="#009688"
-        app:cardCornerRadius="11dp"
-        app:cardElevation="11dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="339dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="#009688"
+                app:cardCornerRadius="11dp"
+                app:cardElevation="11dp">
 
-        <TextView
-            android:id="@+id/melbourneText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Melbourne"
-            android:textSize="20sp" />
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/melbourneText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Melbourne"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

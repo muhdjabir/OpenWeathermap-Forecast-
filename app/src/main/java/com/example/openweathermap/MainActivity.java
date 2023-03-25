@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             requestQueue.add(stringRequest);
             //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
         } else if (!isConnected()) {
-            Toast.makeText(getApplicationContext(), "No Wifi Connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No Wifi Connection", Toast.LENGTH_LONG).show();
         } else  {
             locationTrack.showSettingsAlert();
         }
