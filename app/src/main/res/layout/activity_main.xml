@@ -10,6 +10,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/CurrentLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -18,7 +19,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="339dp"
-        android:layout_height="82dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:cardBackgroundColor="#00BCD4"
         app:cardCornerRadius="11dp"
@@ -28,8 +29,9 @@
             android:id="@+id/LocationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Hello there" />
+            android:text="Hello there"
+            android:textSize="20sp"
+            />
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -37,6 +39,7 @@
         android:layout_width="166dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:onClick="refreshWeatherDetails"
         android:backgroundTint="#00BCD4"
         android:text="Refresh Location" />
 
