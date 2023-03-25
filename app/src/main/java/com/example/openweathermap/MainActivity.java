@@ -2,8 +2,12 @@ package com.example.openweathermap;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int ALL_PERMISSIONS_RESULT = 101;
     private static TextView locationText;
     private static TextView currentLocation;
+    private static TextView timeStamp;
     private static Button refreshButton;
     LocationTrack locationTrack;
     DecimalFormat df = new DecimalFormat("#.##");
@@ -59,14 +66,22 @@ public class MainActivity extends AppCompatActivity {
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        String lastUpdate = pref.getString("timeStamp", "No prior update");
+        String lastWeather = pref.getString("weatherStamp", "No Weather");
+        String lastLocation = pref.getString("locationStamp", "Weather Forecast");
         locationText = findViewById(R.id.LocationText);
         refreshButton = findViewById(R.id.RefreshButton);
         currentLocation = findViewById(R.id.CurrentLocation);
+        timeStamp = findViewById(R.id.TimeStamp);
+        timeStamp.setText(lastUpdate);
+        currentLocation.setText(lastLocation);
+        locationText.setText(lastWeather);
     }
 
     public void refreshWeatherDetails(View vew) {
         locationTrack = new LocationTrack(MainActivity.this);
-        if (locationTrack.canGetLocation()) {
+        if (locationTrack.canGetLocation() && isConnected()) {
             double longitude = locationTrack.getLongitude();
             double latitude = locationTrack.getLatitude();
             String tempUrl = "";
@@ -101,11 +116,14 @@ public class MainActivity extends AppCompatActivity {
                                         + "\n Feels Like: " + df.format(feelsLike) + " °C"
                                         + "\n Humidity: " + humidity + "%"
                                         + "\n Description: " + description
-                                        + "\n Wind Speed: " + wind + "m/s (meters per second)"
+                                        + "\n Wind Speed: " + wind + "m/s"
                                         + "\n Cloudiness: " + clouds + "%"
                                         + "\n Pressure: " + pressure + " hPa";
                                 locationText.setText(output);
                                 currentLocation.setText(cityName + " (" + countryName + ")");
+                                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a dd MM yyyy");
+                                String currentDateandTime = sdf.format(new Date());
+                                timeStamp.setText(String.format("Last updated at: %s", currentDateandTime));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -119,9 +137,25 @@ public class MainActivity extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(stringRequest);
             //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-        } else {
+        } else if (!isConnected()) {
+            Toast.makeText(getApplicationContext(), "No Wifi Connection", Toast.LENGTH_SHORT).show();
+        } else  {
             locationTrack.showSettingsAlert();
         }
+    }
+
+    // Check for internet connection
+    public boolean isConnected() {
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            return connected;
+         } catch (Exception e) {
+            Log.e("Connectivty Exception", e.getMessage());
+        }
+        return connected;
     }
 
     private ArrayList findUnAskedPermissions(ArrayList wanted) {
@@ -201,4 +235,31 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         locationTrack.stopListener();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        String lastUpdated = timeStamp.getText().toString();
+        String lastLocation = currentLocation.getText().toString();
+        String lastWeather = locationText.getText().toString();
+        editor.putString("timeStamp", lastUpdated);
+        editor.putString("locationStamp", lastLocation);
+        editor.putString("weatherStamp", lastWeather);
+        editor.apply();
+    }
+    /*
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("currentLocation", currentLocation.getText().toString());
+        savedInstanceState.putString("currentWeather", locationText.getText().toString());
+        savedInstanceState.putString("lastUpdated", timeStamp.getText().toString());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState){
+    }*/
 }
