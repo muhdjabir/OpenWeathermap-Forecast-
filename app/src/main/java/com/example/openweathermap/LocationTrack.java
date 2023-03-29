@@ -36,6 +36,12 @@ public class LocationTrack extends Service implements LocationListener {
         getLocation();
     }
 
+    // Function to instantiate a Location. Checks whether GPS_PROVIDER and NETOWRK_PROVIDER
+    // is enabled
+    // If Yes:
+    //      Check for permissionto access the fine and coarse Locations, if yes retrieves the current location
+    //Else:
+    //      Throws error informing no service provider is available
     private Location getLocation() {
         try {
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
@@ -99,6 +105,8 @@ public class LocationTrack extends Service implements LocationListener {
         return this.canGetLocation;
     }
 
+    // Function to throw an Alert Dialog informing the user that the GPSis not enabled
+    // Allows user to be routed to settings page to enable Locations
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 

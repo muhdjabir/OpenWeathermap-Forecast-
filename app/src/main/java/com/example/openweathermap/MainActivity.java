@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     DecimalFormat df = new DecimalFormat("#.##");
 
 
+    // Function retrieves the contents and data that was saved from the previous instance to instantiate
+    // the view and enables the permissions for the required features such as GPS and Wifi Connectivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionsToRequest.size() > 0)
-                requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+                requestPermissions((String[]) permissionsToRequest.toArray(
+                        new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        // Future improvement would be to abstract this retrieval of the SharedPreferences
         String lastUpdate = pref.getString("timeStamp", "No prior update");
         String lastWeather = pref.getString("weatherStamp", "No Weather");
         String lastLocation = pref.getString("locationStamp", "Weather Forecast");
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         melbText.setText(lastMEL);
     }
 
-    /* WEIRD, DOESNT WORK WHEN ABSTRACTED OUT
+    /* Function that retrieves the history of the SharedPreferences.
     private void setHistory(View view) {
         timeStamp.setText(lastUpdate);
         currentLocation.setText(lastLocation);
@@ -122,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
     */
 
 
+    // Function that initiates the references for the various elements available
+    // on the main_activity page
     private void connectViews() {
         locationText = findViewById(R.id.LocationText);
         refreshButton = findViewById(R.id.RefreshButton);
@@ -134,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
         sydneyText = findViewById(R.id.sydneyText);
         melbText = findViewById(R.id.melbourneText);
     }
+
+    // Populates the List of Cities that will be used to instantiate
+    // the card view of all the desired cities.
+    // Each element in the array will be used to fetch API Requests from
+    // Openweathermap API
     private void populateCities() {
         cities.add("New York");
         cities.add("Singapore");
@@ -143,6 +154,17 @@ public class MainActivity extends AppCompatActivity {
         cities.add("Melbourne");
     }
 
+    // Function that refreshes the current location and its weather by
+    // 1) Instantiating the LocationTrack Class to retrieve the device location
+    // 2) Checks whether the device has access to Internet and the Location
+    //      a)If true:
+    //          Instantiate String Request to request Weather Detail from openweathermap API
+    //          using the longitude and latitude retrieved from LocationTrack Class
+    //          Call the getOtherWeather method in order to populate the other weather cards
+    //      b)If no wifi,
+    //          Throw no wifi message
+    //      c)If no location
+    //          call LocationTrack class method to ShowSettings and enable location gps
     public void refreshWeatherDetails(View view) {
         locationTrack = new LocationTrack(MainActivity.this);
         if (locationTrack.canGetLocation() && isConnected()) {
@@ -209,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Function to retrieve the weather of the desired cities using a for loop that iterates through
+    // that fetches API Requests using the respective city names that are in the cities ArrayList
     public void getOtherWeather(View view) {
         Toast.makeText(getApplicationContext(),"HELLO THERE", Toast.LENGTH_LONG).show();
         for (String city : cities) {
@@ -275,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Check for internet connection
+    // Function checks for the internet connection of the device
     public boolean isConnected() {
         boolean connected = false;
         try {
@@ -289,6 +313,8 @@ public class MainActivity extends AppCompatActivity {
         return connected;
     }
 
+    //Function that iterates through the permissions ArrayList in order to check whether
+    // there are permissions granted
     private ArrayList findUnAskedPermissions(ArrayList wanted) {
         ArrayList result = new ArrayList();
 
@@ -300,6 +326,8 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
+    // Function that uses the property and PackageManager to check whether the
+    // permission has been granted
     private boolean hasPermission(String permission) {
         if (canMakeSmores()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -352,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Function that takes in an input to throw a message alert dialog
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(message)
@@ -367,6 +396,10 @@ public class MainActivity extends AppCompatActivity {
         locationTrack.stopListener();
     }
 
+
+    // Function that updates the Key-Value pairs for SavedPreferences upon closure of application
+    // using the last fetched weather requests to instantiate for future use
+    // Caches the weather details for current location, last update time and all the cities listed
     @Override
     protected void onPause() {
         super.onPause();
@@ -392,17 +425,4 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("mel", mel);
         editor.apply();
     }
-    /*
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("currentLocation", currentLocation.getText().toString());
-        savedInstanceState.putString("currentWeather", locationText.getText().toString());
-        savedInstanceState.putString("lastUpdated", timeStamp.getText().toString());
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState){
-    }*/
 }
